@@ -1,0 +1,16 @@
+domain: workload-hostalias-operator
+layout:
+- go.kubebuilder.io/v4
+projectName: workload-host-aliases
+repo: github.com/buzhiyun/workload-hostalias-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: false
+  controller: true
+  domain: workload-hostalias-operator
+  group: workload-hostalias-operator
+  kind: WorkloadHostAlias
+  path: github.com/buzhiyun/workload-hostalias-operator/api/v1alpha1
+  version: v1alpha1
+version: "3"

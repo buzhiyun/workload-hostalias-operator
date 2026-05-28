@@ -1,0 +1,25 @@
+# Binaries
+/bin
+/Dockerfile.cross
+
+# Output
+_output/
+
+# Test
+*.test
+
+# Go
+go.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+
+# Vendor (optional)
+/vendor/

@@ -1,0 +1,17 @@
+apiVersion: workload-hostalias-operator/v1alpha1
+kind: WorkloadHostAlias
+metadata:
+  name: example-hostalias
+spec:
+  target:
+    namespace: default
+    kind: Deployment
+    name: my-app
+  hostAliases:
+    - ip: "10.0.0.1"
+      hostnames:
+        - "foo.bar.com"
+        - "foo"
+    - ip: "10.0.0.2"
+      hostnames:
+        - "bar.baz.com"
