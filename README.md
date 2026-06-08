@@ -62,7 +62,7 @@ make run
 创建一个 `WorkloadHostAlias` 资源，为目标工作负载注入 hostAliases：
 
 ```yaml
-apiVersion: workload-hostalias-operator.buzhiyun.com/v1alpha1
+apiVersion: workload-hostalias-operator.buzhiyun/v1alpha1
 kind: WorkloadHostAlias
 metadata:
   name: example-hostalias

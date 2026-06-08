@@ -6,7 +6,7 @@ To verify the installation:
   kubectl get pods -n {{ .Release.Namespace }} -l control-plane=controller-manager
 
   # Check the CRD is installed
-  kubectl get crd workloadhostaliases.workload-hostalias-operator
+  kubectl get crd workloadhostaliases.workload-hostalias-operator.buzhiyun
 
   # View operator logs
   kubectl logs -n {{ .Release.Namespace }} -l control-plane=controller-manager -f
@@ -15,7 +15,7 @@ Quick start example:
 
   # Create a sample WorkloadHostAlias
   cat <<EOF | kubectl apply -f -
-  apiVersion: workload-hostalias-operator/v1alpha1
+  apiVersion: workload-hostalias-operator.buzhiyun/v1alpha1
   kind: WorkloadHostAlias
   metadata:
     name: example-hostalias
@@ -32,5 +32,7 @@ Quick start example:
 
   # Check the status
   kubectl get workloadhostaliases
+  # or use short name
+  kubectl get wha
 
 For more information, visit: https://github.com/buzhiyun/workload-hostalias-operator
