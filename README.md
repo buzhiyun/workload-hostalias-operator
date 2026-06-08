@@ -13,21 +13,27 @@
 - 高可用：Leader Election + 2 副本部署
 - 可观测性：Prometheus 指标、结构化日志、Kubernetes Events
 
-## 快速开始
+## 安装
 
-### 安装 CRD
-
-```bash
-make install
-```
-
-### 本地运行
+### 方式一：Helm 安装（推荐）
 
 ```bash
-make run
+# 安装
+helm install workload-hostalias-operator ./chart/workload-hostalias-operator \
+  --namespace workload-hostalias-operator-system \
+  --create-namespace
+
+# 自定义镜像
+helm install workload-hostalias-operator ./chart/workload-hostalias-operator \
+  --namespace workload-hostalias-operator-system \
+  --set image.repository=buzhiyun/workload-hostalias-operator \
+  --set image.tag=v0.0.1
+
+# 卸载
+helm uninstall workload-hostalias-operator --namespace workload-hostalias-operator-system
 ```
 
-### 部署到集群
+### 方式二：Makefile 部署
 
 ```bash
 # 构建并推送镜像
@@ -35,6 +41,20 @@ make docker-build docker-push IMG=<your-registry>/workload-hostalias-operator:la
 
 # 部署
 make deploy IMG=<your-registry>/workload-hostalias-operator:latest
+
+# 卸载
+make undeploy
+make uninstall
+```
+
+### 方式三：本地运行
+
+```bash
+# 安装 CRD
+make install
+
+# 本地运行控制器
+make run
 ```
 
 ## 使用示例
@@ -155,13 +175,25 @@ Operator 会在管理的工作负载上添加三个注解：
 | `workload_host_alias_reconciliation_duration_seconds` | Histogram | - | 调和耗时 |
 | `workload_host_alias_managed_workloads` | Gauge | - | 当前管理的工作负载数量 |
 
-## 命令行参数
+## Helm Chart 配置
 
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
-| `--metrics-bind-address` | `:8080` | Metrics 端点监听地址 |
-| `--health-probe-bind-address` | `:8081` | 健康检查端点监听地址 |
-| `--leader-elect` | `false` | 启用 Leader Election 实现高可用 |
+| `replicaCount` | `2` | 副本数 |
+| `image.repository` | `buzhiyun/workload-hostalias-operator` | 镜像仓库 |
+| `image.tag` | `v0.0.1` | 镜像标签 |
+| `image.pullPolicy` | `IfNotPresent` | 镜像拉取策略 |
+| `leaderElection.enabled` | `true` | 启用 Leader Election |
+| `metrics.enabled` | `true` | 启用 Metrics |
+| `metrics.bindAddress` | `:8080` | Metrics 监听地址 |
+| `healthProbe.bindAddress` | `:8081` | 健康检查监听地址 |
+| `resources.limits.cpu` | `200m` | CPU 限制 |
+| `resources.limits.memory` | `128Mi` | 内存限制 |
+| `resources.requests.cpu` | `100m` | CPU 请求 |
+| `resources.requests.memory` | `64Mi` | 内存请求 |
+| `logLevel` | `info` | 日志级别（debug/info/error） |
+| `podAntiAffinity.enabled` | `true` | Pod 反亲和性 |
+| `podAntiAffinity.type` | `soft` | 反亲和类型（soft/hard） |
 
 ## 开发
 
@@ -170,6 +202,7 @@ Operator 会在管理的工作负载上添加三个注解：
 - Go 1.26+
 - Docker（或 Podman）
 - kubectl + 可访问的 Kubernetes 集群
+- Helm 3.x（可选）
 
 ### 构建与测试
 
@@ -181,11 +214,13 @@ make generate       # 重新生成 DeepCopy 方法
 make run            # 本地运行控制器
 ```
 
-### 卸载
+### Helm 命令
 
 ```bash
-make undeploy       # 卸载控制器部署
-make uninstall      # 卸载 CRD
+make helm-lint      # Lint 检查 Chart
+make helm-template  # 预览渲染结果
+make helm-install   # 安装到集群
+make helm-uninstall # 卸载
 ```
 
 ## 许可证
