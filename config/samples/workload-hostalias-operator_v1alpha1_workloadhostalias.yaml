@@ -1,4 +1,4 @@
-apiVersion: workload-hostalias-operator/v1alpha1
+apiVersion: workload-hostalias-operator.buzhiyun/v1alpha1
 kind: WorkloadHostAlias
 metadata:
   name: example-hostalias

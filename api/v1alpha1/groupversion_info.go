@@ -7,7 +7,7 @@ import (
 
 var (
 	GroupVersion = schema.GroupVersion{
-		Group:   "workload-hostalias-operator",
+		Group:   "workload-hostalias-operator.buzhiyun",
 		Version: "v1alpha1",
 	}
 

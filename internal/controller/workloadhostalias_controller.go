@@ -40,9 +40,9 @@ type WorkloadHostAliasReconciler struct {
 	Recorder record.EventRecorder
 }
 
-//+kubebuilder:rbac:groups=workload-hostalias-operator,resources=workloadhostaliases,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=workload-hostalias-operator,resources=workloadhostaliases/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=workload-hostalias-operator,resources=workloadhostaliases/finalizers,verbs=update
+//+kubebuilder:rbac:groups=workload-hostalias-operator.buzhiyun,resources=workloadhostaliases,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=workload-hostalias-operator.buzhiyun,resources=workloadhostaliases/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=workload-hostalias-operator.buzhiyun,resources=workloadhostaliases/finalizers,verbs=update
 //+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;update;patch
 //+kubebuilder:rbac:groups=apps,resources=daemonsets,verbs=get;list;watch;update;patch
 //+kubebuilder:rbac:groups=apps,resources=statefulsets,verbs=get;list;watch;update;patch

@@ -57,7 +57,8 @@ type WorkloadHostAliasStatus struct {
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
-//+kubebuilder:resource:scope=Cluster
+//+kubebuilder:resource:scope=Cluster,shortName=wha
+//+groupName=workload-hostalias-operator.buzhiyun
 //+kubebuilder:printcolumn:name="Target Kind",type=string,JSONPath=`.spec.target.kind`
 //+kubebuilder:printcolumn:name="Target Name",type=string,JSONPath=`.spec.target.name`
 //+kubebuilder:printcolumn:name="Target Namespace",type=string,JSONPath=`.spec.target.namespace`
