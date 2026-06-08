@@ -1,7 +1,10 @@
 # Build the manager binary
-FROM golang:1.26 AS builder
+FROM golang:1.26-alpine AS builder
 ARG TARGETOS
 ARG TARGETARCH
+
+# Use China mirror for Go modules
+ENV GOPROXY=https://goproxy.cn,direct
 
 WORKDIR /workspace
 # Copy the Go Modules manifests
@@ -19,10 +22,11 @@ COPY internal/ internal/
 # Build
 RUN CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH} go build -o /manager cmd/main.go
 
-# Use distroless as minimal base image to package the manager binary
-FROM gcr.io/distroless/static:nonroot
+# Use alpine as minimal base image
+FROM alpine:3.20
+RUN apk --no-cache add ca-certificates
 WORKDIR /
 COPY --from=builder /manager .
-USER 65532:65532
+USER 65534:65534
 
 ENTRYPOINT ["/manager"]

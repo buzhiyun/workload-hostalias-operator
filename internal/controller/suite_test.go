@@ -81,10 +81,10 @@ var _ = Describe("WorkloadHostAlias Controller", func() {
 
 	Context("When creating a WorkloadHostAlias for a Deployment", func() {
 		var (
-			deploy      *appsv1.Deployment
-			wha         *hostaliasv1alpha1.WorkloadHostAlias
-			whaName     string
-			deployName  string
+			deploy     *appsv1.Deployment
+			wha        *hostaliasv1alpha1.WorkloadHostAlias
+			whaName    string
+			deployName string
 		)
 
 		BeforeEach(func() {

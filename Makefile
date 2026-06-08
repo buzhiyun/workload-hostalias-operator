@@ -1,5 +1,5 @@
 # Image URL to use all building/pushing image targets
-IMG ?= controller:latest
+IMG ?= buzhiyun/workload-hostalias-operator:latest
 
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.30.0
@@ -89,6 +89,36 @@ deploy: manifests kustomize ## Deploy controller to the K8s cluster specified in
 undeploy: kustomize ## Undeploy controller from the K8s cluster specified in ~/.kube/config.
 	$(KUSTOMIZE) build config/default | kubectl delete --ignore-not-found=$(ignore-not-found) -f -
 
+##@ Helm
+
+HELM ?= helm
+CHART_DIR ?= chart/workload-hostalias-operator
+CHART_VERSION ?= $(shell grep '^version:' $(CHART_DIR)/Chart.yaml | awk '{print $$2}')
+
+.PHONY: helm-lint
+helm-lint: ## Lint the Helm chart.
+	$(HELM) lint $(CHART_DIR)
+
+.PHONY: helm-package
+helm-package: helm-lint ## Package the Helm chart.
+	$(HELM) package $(CHART_DIR) --destination=./dist/
+
+.PHONY: helm-install
+helm-install: ## Install the Helm chart to the current cluster.
+	$(HELM) upgrade --install workload-hostalias-operator $(CHART_DIR) \
+		--namespace workload-hostalias-operator-system \
+		--create-namespace \
+		--set image.repository=$(IMG)
+
+.PHONY: helm-uninstall
+helm-uninstall: ## Uninstall the Helm chart.
+	$(HELM) uninstall workload-hostalias-operator --namespace workload-hostalias-operator-system
+
+.PHONY: helm-template
+helm-template: ## Render the Helm chart templates without installing.
+	$(HELM) template workload-hostalias-operator $(CHART_DIR) \
+		--namespace workload-hostalias-operator-system
+
 ##@ Dependencies
 
 LOCALBIN ?= $(shell pwd)/bin
@@ -113,7 +143,7 @@ kustomize: $(KUSTOMIZE) ## Download kustomize locally if necessary.
 $(KUSTOMIZE): $(LOCALBIN)
 	$(call go-install-tool,$(KUSTOMIZE),sigs.k8s.io/kustomize/kustomize/v5,$(KUSTOMIZE_VERSION))
 
-CONTROLLER_TOOLS_VERSION ?= v0.16.0
+CONTROLLER_TOOLS_VERSION ?= v0.21.0
 ENVTEST_VERSION ?= latest
 KUSTOMIZE_VERSION ?= v5.5.0
 

@@ -1,0 +1,91 @@
+# Default values for workload-hostalias-operator.
+
+replicaCount: 2
+
+image:
+  repository: buzhiyun/workload-hostalias-operator
+  tag: "v0.0.1"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 65534
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65534
+  capabilities:
+    drop:
+      - ALL
+
+# Leader election
+leaderElection:
+  enabled: true
+
+# Metrics configuration
+metrics:
+  enabled: true
+  bindAddress: ":8080"
+  serviceMonitor:
+    enabled: false
+    labels: {}
+    interval: 30s
+
+# Health probes
+healthProbe:
+  bindAddress: ":8081"
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 64Mi
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8081
+  initialDelaySeconds: 15
+  periodSeconds: 20
+
+readinessProbe:
+  httpGet:
+    path: /readyz
+    port: 8081
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+autoscaling:
+  enabled: false
+
+volumes: []
+volumeMounts: []
+
+nodeSelector: {}
+tolerations: []
+
+affinity: {}
+
+# Pod anti-affinity (soft by default)
+podAntiAffinity:
+  enabled: true
+  type: soft  # soft or hard
+
+# Log level
+logLevel: info

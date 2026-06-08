@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	scheme = runtime.NewScheme()
+	scheme   = runtime.NewScheme()
 	setupLog = ctrl.Log.WithName("setup")
 )
 

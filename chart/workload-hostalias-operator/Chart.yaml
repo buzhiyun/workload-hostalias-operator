@@ -1,0 +1,16 @@
+apiVersion: v2
+name: workload-hostalias-operator
+description: Kubernetes Operator for managing hostAliases in workloads (Deployment, DaemonSet, StatefulSet)
+type: application
+version: 0.1.0
+appVersion: "0.0.1"
+keywords:
+  - kubernetes
+  - operator
+  - hostaliases
+  - workload
+maintainers:
+  - name: buzhiyun
+home: https://github.com/buzhiyun/workload-hostalias-operator
+sources:
+  - https://github.com/buzhiyun/workload-hostalias-operator
